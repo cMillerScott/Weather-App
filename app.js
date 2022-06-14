@@ -1,6 +1,4 @@
 window.addEventListener("load", () => {
-
-
   //  navigation animation
 
   const navTabs = document.querySelectorAll(".navTab");
@@ -46,7 +44,7 @@ window.addEventListener("load", () => {
       const apiLocation = fetch(`https://api.weather.gov/points/${lat},${long}`)
         .then((responseOne) => {
           if (responseOne.status == 200) {
-            console.log(responseOne.status)
+            console.log(responseOne.status);
             return responseOne.json();
           } else if (responseOne.status == 503) {
             location.textContent = `Current Weather Conditions Are Currently Unavailable`;
@@ -54,30 +52,24 @@ window.addEventListener("load", () => {
           }
         })
         .then((locationData) => {
-          
           const { city, state } =
             locationData.properties.relativeLocation.properties;
-            location.textContent = `Current Weather Conditions For ${city}, ${state}`;
+          location.textContent = `Current Weather Conditions For ${city}, ${state}`;
 
           // second weather api call
 
           return fetch(locationData.properties.forecastHourly)
             .then((responseTwo) => {
-
               if (responseTwo.ok) {
-                console.log(responseTwo.status)
+                console.log(responseTwo.status);
                 return responseTwo.json();
               } else if (responseTwo.status == 503) {
                 location.textContent = `Current Weather Conditions Are Unavailable At This Time`;
               }
             })
             .then((forecastData) => {
-              const {
-                temperature,
-                windSpeed,
-                windDirection,
-                shortForecast,
-              } = forecastData.properties.periods[0];
+              const { temperature, windSpeed, windDirection, shortForecast } =
+                forecastData.properties.periods[0];
 
               temp.textContent = `${temperature} F`;
               wind.textContent = `${windSpeed} from the ${windDirection}`;
@@ -86,4 +78,6 @@ window.addEventListener("load", () => {
         });
     });
   }
+
+
 });
